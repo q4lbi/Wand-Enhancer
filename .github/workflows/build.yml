@@ -12,6 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v5
         with:
+          repository: 'k1tbyte/Wand-Enhancer'
           ref: '1.0.5.0'
 
       - name: Setup MSBuild
