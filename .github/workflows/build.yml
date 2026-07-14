@@ -15,18 +15,21 @@ jobs:
           repository: 'k1tbyte/Wand-Enhancer'
           ref: '1.0.5.0'
 
+      - name: Setup NuGet
+        uses: NuGet/setup-nuget@v3
+        
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet packages
-        run: nuget restore
+        run: nuget restore Wand-Enhancer.sln
 
       - name: Build legacy executable
-        run: msbuild -p:Configuration=Release
+        run: msbuild Wand-Enhancer.sln -p:Configuration=Release -p:Platform="Any CPU"
 
       - name: Upload legacy executable
         uses: actions/upload-artifact@v4
         with:
           name: WandEnhancer-1.0.5.0
-          path: "**/bin/Release/*.exe"
+          path: "**/bin/Release/**/*.exe"
           if-no-files-found: error
