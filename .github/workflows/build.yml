@@ -21,13 +21,15 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
-      - name: Build Proxy DLL (CMake)
+      - name: Build Proxy DLL (MinGW)
         shell: pwsh
         run: |
           cd tools/asar-fuses-bypass
-          cmake -B cmake-build-release
-          cmake --build cmake-build-release --config Release
-          # Windows CMake puts the output in a Release subfolder, so we move it to where MSBuild is looking
+          # Force CMake to use the GCC/MinGW compiler instead of Visual Studio
+          cmake -G "MinGW Makefiles" -B cmake-build-release
+          cmake --build cmake-build-release
+          
+          # MinGW usually outputs to the root directory, but we will catch it just in case
           if (Test-Path "cmake-build-release\Release\version.dll") {
               Copy-Item "cmake-build-release\Release\version.dll" -Destination "cmake-build-release\version.dll"
           }
