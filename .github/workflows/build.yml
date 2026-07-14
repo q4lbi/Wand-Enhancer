@@ -22,10 +22,10 @@ jobs:
         uses: microsoft/setup-msbuild@v2
 
       - name: Restore NuGet packages
-        run: nuget restore Wand-Enhancer.sln
+        run: nuget restore Wemod-Patcher.sln
 
       - name: Build legacy executable
-        run: msbuild Wand-Enhancer.sln -p:Configuration=Release -p:Platform="Any CPU"
+        run: msbuild Wemod-Patcher.sln -p:Configuration=Release -p:Platform="Any CPU"
 
       - name: Upload legacy executable
         uses: actions/upload-artifact@v4
