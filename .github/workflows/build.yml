@@ -21,6 +21,17 @@ jobs:
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
 
+      - name: Build Proxy DLL (CMake)
+        shell: pwsh
+        run: |
+          cd tools/asar-fuses-bypass
+          cmake -B cmake-build-release
+          cmake --build cmake-build-release --config Release
+          # Windows CMake puts the output in a Release subfolder, so we move it to where MSBuild is looking
+          if (Test-Path "cmake-build-release\Release\version.dll") {
+              Copy-Item "cmake-build-release\Release\version.dll" -Destination "cmake-build-release\version.dll"
+          }
+
       - name: Restore NuGet packages
         run: nuget restore Wemod-Patcher.sln
 
